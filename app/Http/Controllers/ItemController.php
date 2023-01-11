@@ -20,12 +20,7 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-          'name' => 'required|string|max:255',
-          'price' => 'required|numeric',
-           'url' => 'required|url',
-          'description' => 'required|string',
-        ]);
+        $this->validator($request);
 
         $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false]);
 
@@ -52,12 +47,7 @@ class ItemController extends Controller
 
     public function update(Request $request, int $id): JsonResponse
     {
-        $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'url' => 'required|url',
-            'description' => 'required|string',
-        ]);
+        $this->validator($request);
 
         $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false]);
 
@@ -73,5 +63,15 @@ class ItemController extends Controller
                 'item' => (new ItemSerializer($item))->getData()
             ]
         );
+    }
+
+    public function validator(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'url' => 'required|url',
+            'description' => 'required|string',
+        ]);
     }
 }
