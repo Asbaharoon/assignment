@@ -22,10 +22,10 @@ class UserService
  
     }
 
-    public function createUser(array $userData) 
+    public function createUser(array $userData)
     {
         // Create user
-        $user = User::create([
+        return User::create([
             'name' => $userData['name'],
             'email' => $userData['email'],
             'password' => Hash::make($userData['password']),
