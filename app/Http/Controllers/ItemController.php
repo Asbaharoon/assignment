@@ -65,7 +65,7 @@ class ItemController extends Controller
         );
     }
 
-    public function validator(Request $request)
+    protected function validator(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|string|max:255',
