@@ -18,3 +18,11 @@ Route::get('/items', [ItemController::class, 'index']);
 Route::post('/items', [ItemController::class, 'store']);
 Route::get('/items/{item}', [ItemController::class, 'show']);
 Route::put('/items/{id}', [ItemController::class, 'update']);
+Route::delete('/items/{id}', [ItemController::class, 'delete']);
+
+/////////////////////////////////////
+
+Route::get('/total', [ItemController::class, 'totalItemsCount']);
+Route::get('/average/{item}', [ItemController::class, 'averagePrice']);
+Route::get('/websitehighestprice', [ItemController::class, 'websiteHighestTotalPrice']);
+Route::get('/totalpricethismonth', [ItemController::class, 'totalPriceThisMonth']);

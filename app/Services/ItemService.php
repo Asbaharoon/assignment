@@ -11,7 +11,7 @@ use App\Serializers\ItemSerializer;
 
 class ItemService
 {
-    
+
     public function createItem(Request $request)
     {
         $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false]);
@@ -43,5 +43,4 @@ class ItemService
             ]
         );
     }
-
 }

@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Services\UserService;
 use App\Events\NewUserRegistered;
-// use Auth;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-
 
 class StorageController extends Controller
 {
