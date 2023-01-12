@@ -7,71 +7,33 @@ use App\Serializers\ItemSerializer;
 use App\Serializers\ItemsSerializer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use League\CommonMark\CommonMarkConverter;
+use App\Services\ItemService;
+use App\Http\Requests\StoreItemRequest;
+use App\Events\NewItemRegistered;
+
 
 class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::all();
-
+        $items = Item::All();  
         return JsonResponse::create(['items' => (new ItemsSerializer($items))->getData()]);
     }
 
-    public function store(Request $request)
+    public function store(StoreItemRequest $request, ItemService $itemService)
     {
-        $this->validator($request);
+        return $itemService->createItem($request);
+    }
 
-        $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false]);
-
-        $item = Item::create([
-            'name' => $request->get('name'),
-            'price' => $request->get('price'),
-            'url' => $request->get('url'),
-            'description' => $converter->convert($request->get('description'))->getContent(),
-        ]);
-
+    public function show(Item $item)
+    {
         $serializer = new ItemSerializer($item);
-
         return new JsonResponse(['item' => $serializer->getData()]);
     }
 
-    public function show($id)
+    public function update(StoreItemRequest $request, int $id, ItemService $itemService): JsonResponse
     {
-        $item = Item::findOrFail($id);
-
-        $serializer = new ItemSerializer($item);
-
-        return new JsonResponse(['item' => $serializer->getData()]);
+        return $itemService->updateItem($request, $id);
     }
 
-    public function update(Request $request, int $id): JsonResponse
-    {
-        $this->validator($request);
-
-        $converter = new CommonMarkConverter(['html_input' => 'escape', 'allow_unsafe_links' => false]);
-
-        $item = Item::findOrFail($id);
-        $item->name = $request->get('name');
-        $item->url = $request->get('url');
-        $item->price = $request->get('price');
-        $item->description = $converter->convert($request->get('description'))->getContent();
-        $item->save();
-
-        return new JsonResponse(
-            [
-                'item' => (new ItemSerializer($item))->getData()
-            ]
-        );
-    }
-
-    protected function validator(Request $request)
-    {
-        $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'url' => 'required|url',
-            'description' => 'required|string',
-        ]);
-    }
 }
