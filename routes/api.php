@@ -28,7 +28,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/websitehighestprice', [ItemController::class, 'websiteHighestTotalPrice']);
     Route::get('/totalpricethismonth', [ItemController::class, 'totalPriceThisMonth']);
 
-    });
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+
+});
 
 //////////////////////////////////////
 
